@@ -9,6 +9,12 @@
 	<description>Simplest possible Java Webapp</description>
 
 	<build>
+		<properties>
+                <sonar.projectKey>dmitri166_hello-world-war</sonar.projectKey>
+                <sonar.organization>dmitri166</sonar.organization>
+                <sonar.host.url>https://sonarcloud.io</sonar.host.url>
+                <sonar.login>70c900f310a02ec8f3f40417b81d546c71eff954</sonar.login>
+                </properties>
 		<plugins>
 			<plugin>
 				<groupId>org.mortbay.jetty</groupId>
@@ -24,6 +30,7 @@
 				<version>2.1.1</version>
 			</plugin>
 		</plugins>
+		
 	</build>
 
 </project>
