@@ -21,7 +21,7 @@ pipeline {
 
     stage('Build Docker Image') {
       steps {
-        sh 'docker build -t java:${BUILD_NUMBER} .'
+        sh 'docker build -t hello-world-war:${BUILD_NUMBER} .'
       }
     }
 
