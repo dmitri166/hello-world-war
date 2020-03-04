@@ -21,7 +21,9 @@ pipeline {
 
     stage('Build Docker Image') {
       steps {
-        sh 'docker build -t hello-world-war:${BUILD_NUMBER} .'
+        sh '''cp /opt/tomcat/.jenkins/workspace/hello-world-war_dev/target/hello-world-war-1.0.0.war  /opt/tomcat/.jenkins/workspace/hello-world-war_dev
+
+docker build -t hello-world-war:${BUILD_NUMBER} .'''
       }
     }
 
