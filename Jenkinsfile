@@ -11,7 +11,7 @@ pipeline {
 
         stage('Notify Failure') {
           steps {
-            slackSend(failOnError: true, color: 'danger')
+            slackSend(failOnError: true, color: 'danger', message: 'Checkout code failure')
           }
         }
 
@@ -24,7 +24,6 @@ pipeline {
           steps {
             sh '''mvn clean package
 
-build  aasds 3123rfds783c78194hdjasdq -t
 
 
 
@@ -45,8 +44,19 @@ build  aasds 3123rfds783c78194hdjasdq -t
     }
 
     stage('Static Code Analysis') {
-      steps {
-        sh 'mvn clean verify sonar:sonar'
+      parallel {
+        stage('Static Code Analysis') {
+          steps {
+            sh 'mvn clean verify sonar:sonar'
+          }
+        }
+
+        stage('Notify Failure') {
+          steps {
+            slackSend(failOnError: true, color: 'danger', message: 'Static Code Analyses Failed ')
+          }
+        }
+
       }
     }
 
@@ -63,6 +73,12 @@ docker login -u admin -p dima1986 192.168.1.149:8083
 docker push 192.168.1.149:8083/hello-world-war:${BUILD_NUMBER}
 
 '''
+      }
+    }
+
+    stage('Notify Slack') {
+      steps {
+        slackSend(color: 'good', message: 'Build Passed: ${env.BUILD_NUMBER}')
       }
     }
 
