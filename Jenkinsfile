@@ -19,8 +19,12 @@ pipeline {
     }
 
     stage('Build Maven War') {
-      steps {
-        sh '''mvn clean package
+      parallel {
+        stage('Build Maven War') {
+          steps {
+            sh '''mvn clean package
+
+build  aasds 3123rfds783c78194hdjasdq -t
 
 
 
@@ -28,6 +32,15 @@ pipeline {
 
 
 '''
+          }
+        }
+
+        stage('Notify Failure') {
+          steps {
+            slackSend(failOnError: true, message: 'Maven Build Failed', color: 'danger')
+          }
+        }
+
       }
     }
 
