@@ -23,7 +23,9 @@ pipeline {
       steps {
         sh '''cp /opt/tomcat/.jenkins/workspace/hello-world-war_dev/target/hello-world-war-1.0.0.war  /opt/tomcat/.jenkins/workspace/hello-world-war_dev
 
-docker build -t hello-world-war:${BUILD_NUMBER} .'''
+docker build -t hello-world-war:${BUILD_NUMBER} .
+
+docker push http://192.168.1.149:8081/repository/hello-world-war-private/:8083/hello-world-war:${BUILD_NUMBER}'''
       }
     }
 
