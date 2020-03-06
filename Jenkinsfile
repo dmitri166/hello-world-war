@@ -2,27 +2,14 @@ pipeline {
   agent any
   stages {
     stage('Checkout Code') {
-      parallel {
-        stage('Checkout Code') {
-          steps {
-            echo 'Check out'
-          }
-        }
-
-        stage('Notify Failure') {
-          steps {
-            slackSend(failOnError: true, color: 'danger', message: 'Checkout code failure')
-          }
-        }
-
+      steps {
+        echo 'Check out'
       }
     }
 
     stage('Build Maven War') {
-      parallel {
-        stage('Build Maven War') {
-          steps {
-            sh '''mvn clean package
+      steps {
+        sh '''mvn clean package
 
 
 
@@ -31,32 +18,12 @@ pipeline {
 
 
 '''
-          }
-        }
-
-        stage('Notify Failure') {
-          steps {
-            slackSend(failOnError: true, message: 'Maven Build Failed', color: 'danger')
-          }
-        }
-
       }
     }
 
     stage('Static Code Analysis') {
-      parallel {
-        stage('Static Code Analysis') {
-          steps {
-            sh 'mvn clean verify sonar:sonar'
-          }
-        }
-
-        stage('Notify Failure') {
-          steps {
-            slackSend(failOnError: true, color: 'danger', message: 'Static Code Analyses Failed ')
-          }
-        }
-
+      steps {
+        sh 'mvn clean verify sonar:sonar'
       }
     }
 
@@ -78,7 +45,7 @@ docker push 192.168.1.149:8083/hello-world-war:${BUILD_NUMBER}
 
     stage('Notify Slack') {
       steps {
-        slackSend(color: 'good', message: 'Build Passed: ${env.BUILD_NUMBER}')
+        slackSend(color: 'good', message: 'Build Passed: ${BUILD_NUMBER}')
       }
     }
 
