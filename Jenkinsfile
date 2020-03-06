@@ -2,9 +2,19 @@ pipeline {
   agent any
   stages {
     stage('Checkout Code') {
-      steps {
-        echo 'Check out'
-        slackSend(color: 'true', message: 'Checkout Code Failed', failOnError: true)
+      parallel {
+        stage('Checkout Code') {
+          steps {
+            echo 'Check out'
+          }
+        }
+
+        stage('Notify Failure') {
+          steps {
+            slackSend(failOnError: true, color: 'danger')
+          }
+        }
+
       }
     }
 
