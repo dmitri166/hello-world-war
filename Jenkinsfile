@@ -4,10 +4,6 @@ pipeline {
     stage('Checkout Code') {
       steps {
         echo 'Check out'
-        catchError(buildResult: 'Failure', message: 'Failure', stageResult: 'Failure') {
-          slackSend(color: 'danger', message: 'Failure')
-        }
-
       }
     }
 
