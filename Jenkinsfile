@@ -45,7 +45,7 @@ docker push 192.168.1.149:8083/hello-world-war: ${BUILD_NUMBER}
 
     stage('Notify Slack') {
       steps {
-        slackSend(color: 'good', message: 'Build Passed')
+        slackSend(color: 'good', message: 'Build Passed' : '${BUILD_NUMBER}')
       }
     }
 
