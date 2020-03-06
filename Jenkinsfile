@@ -4,7 +4,7 @@ pipeline {
     stage('Checkout Code') {
       steps {
         echo 'Check out'
-        slackSend(color: 'danger', message: 'Checkout Code Failed', failOnError: true)
+        slackSend(color: 'true', message: 'Checkout Code Failed', failOnError: true)
       }
     }
 
