@@ -9,7 +9,9 @@ pipeline {
 
     stage('Build Maven War') {
       steps {
-        sh 'mvn clean package'
+        sh '''mvn clean package
+
+slackSend (color: \'#00FF00\', message: "SUCCESSFUL: Job \'${env.JOB_NAME} [${env.BUILD_NUMBER}]\' (${env.BUILD_URL})"'''
       }
     }
 
@@ -32,12 +34,6 @@ docker login -u admin -p dima1986 192.168.1.149:8083
 docker push 192.168.1.149:8083/hello-world-war:${BUILD_NUMBER}
 
 '''
-      }
-    }
-
-    stage('Notify Slack') {
-      steps {
-        sh ' slackSend (color: \'#FFFF00\', message: "STARTED: Job \'${env.JOB_NAME} [${env.BUILD_NUMBER}]\' (${env.BUILD_URL})")'
       }
     }
 
