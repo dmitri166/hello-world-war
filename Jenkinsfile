@@ -27,6 +27,8 @@ docker build -t hello-world-war:${BUILD_NUMBER} .
 
 docker tag hello-world-war:${BUILD_NUMBER} 192.168.1.149:8083/hello-world-war:${BUILD_NUMBER}
 
+docker login -u admin -p dima1986 192.168.1.149:8083
+
 docker push 192.168.1.149:8083/hello-world-war:${BUILD_NUMBER}
 
 '''
