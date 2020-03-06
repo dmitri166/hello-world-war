@@ -25,7 +25,11 @@ pipeline {
 
 docker build -t hello-world-war:${BUILD_NUMBER} .
 
-docker push http://192.168.1.149:8081/service/rest/repository/browse/hello-world-war-private:8081/hello-world-war:${BUILD_NUMBER}'''
+docker tag hello-world-war:${BUILD_NUMBER} 192.168.1.149:8083/hello-world-war:${BUILD_NUMBER}
+
+docker push 192.168.1.149:8083/hello-world-war
+
+'''
       }
     }
 
