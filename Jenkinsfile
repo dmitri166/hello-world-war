@@ -12,12 +12,13 @@ pipeline {
         sh '''mvn clean package
 
 
-
-
-
+asdasdd
+asdasd
+asdasd
 
 
 '''
+        catchError(buildResult: 'FAILURE', catchInterruptions: true, message: 'Step Failed', stageResult: 'SUCCESS')
       }
     }
 
@@ -43,17 +44,5 @@ docker push 192.168.1.149:8083/hello-world-war:${BUILD_NUMBER}
       }
     }
 
-    stage('Notify Slack') {
-      steps {
-        sh '''post {
-    success {
-        slackSend channel: \'#dmitridocker\',
-                  color: \'good\',
-                  message: "completed successfully."
-    }
-}'''
-        }
-      }
-
-    }
   }
+}
