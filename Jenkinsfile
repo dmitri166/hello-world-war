@@ -12,13 +12,9 @@ pipeline {
         sh '''mvn clean package
 
 
-asdasdd
-asdasd
-asdasd
 
 
 '''
-        catchError(buildResult: 'FAILURE', catchInterruptions: true, message: 'Step Failed', stageResult: 'SUCCESS')
       }
     }
 
