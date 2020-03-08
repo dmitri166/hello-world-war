@@ -42,7 +42,8 @@ pipeline {
 
     stage('Build Docker Image') {
       steps {
-        sh '''cp /opt/tomcat/.jenkins/workspace/hello-world-war_dev/target/hello-world-war-1.0.0.war  /opt/tomcat/.jenkins/workspace/hello-world-war_dev
+          try {
+              sh '''cp /opt/tomcat/.jenkins/workspace/hello-world-war_dev/target/hello-world-war-1.0.0.war  /opt/tomcat/.jenkins/workspace/hello-world-war_dev
 
 docker build -t hello-world-war:${BUILD_NUMBER} .
 
@@ -52,9 +53,17 @@ docker login -u admin -p dima1986 192.168.1.149:8083
 
 docker push 192.168.1.149:8083/hello-world-war:${BUILD_NUMBER}
 
+'''          
+       notifySlack()
+       // Existing build steps.
+   } catch (e) {
+       currentBuild.result = 'FAILURE'
+       throw e
+   } 
+     }
+
 '''
-      }
-    }
+     }
 stage('Notify Slack') {
   try {
        notifySlack()
@@ -68,3 +77,4 @@ stage('Notify Slack') {
 
   }
 }
+
