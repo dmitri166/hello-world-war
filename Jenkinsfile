@@ -1,5 +1,5 @@
-def COLOR_MAP = [...]
-def getBuildUser(){...}
+def COLOR_MAP 
+def getBuildUser
 
 pipeline {
     // Set up local variables for your pipeline
