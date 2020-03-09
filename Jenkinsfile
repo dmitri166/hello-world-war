@@ -1,5 +1,6 @@
 def COLOR_MAP = [...]
 def getBuildUser(){...}
+
 pipeline {
     // Set up local variables for your pipeline
     environment {
@@ -52,6 +53,9 @@ pipeline {
 	'''
 	      }
 	    }
+		  
+        agent any
+		  
 	stages {
         stage('Error') {
             // when doError is equal to 1, return an error
