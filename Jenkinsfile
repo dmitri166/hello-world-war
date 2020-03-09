@@ -1,19 +1,13 @@
-def notifySlack(String buildStatus = 'STARTED') {
-	    // Build status of null means success.
-	    buildStatus = buildStatus ?: 'SUCCESS'
-	    def color
-	    if (buildStatus == 'STARTED') {
-	        color = '#D4DADF'
-	    } else if (buildStatus == 'SUCCESS') {
-	        color = '#BDFFC3'
-	    } else if (buildStatus == 'UNSTABLE') {
-	        color = '#FFFE89'
-	    } else {
-	        color = '#FF9FA1'
-	    }
-	    def msg = "${buildStatus}: `${env.JOB_NAME}` #${env.BUILD_NUMBER}:\n${env.BUILD_URL}"
-	    slackSend(color: color, message: msg)
-	}
+def COLOR_MAP = [...]
+def getBuildUser(){...}
+pipeline {
+    // Set up local variables for your pipeline
+    environment {
+        // test variable: 0=success, 1=fail; must be string
+        doError = '0'
+        BUILD_USER = ''
+    }
+
 	pipeline {
 	  agent any
 	  stages {
@@ -58,20 +52,39 @@ def notifySlack(String buildStatus = 'STARTED') {
 	'''
 	      }
 	    }
-	stage('Notify Slack') {
-        steps {
-            try {
-	       notifySlack()
-	       // Existing build steps.
-	   } catch (e) {
-	       currentBuild.result = 'FAILURE'
-	       throw e
-	   } finally {
-	       notifySlack(currentBuild.result)
-	   }
-	        
-	      }
-	 
-	  }
-	}
+	stages {
+        stage('Error') {
+            // when doError is equal to 1, return an error
+            when {
+                expression { doError == '1' }
+            }
+            steps {
+                echo "Failure :("
+                error "Test failed on purpose, doError == str(1)"
+            }
+        }
+        stage('Success') {
+            // when doError is equal to 0, just print a simple message
+            when {
+                expression { doError == '0' }
+            }
+            steps {
+                echo "Success :)"
+            }
+        }
+    }
+
+    // Post-build actions
+    post {
+        always {
+            script {
+                BUILD_USER = getBuildUser()
+            }
+            echo 'I will always say hello in the console.'
+            slackSend channel: '#slack-test-channel',
+                color: COLOR_MAP[currentBuild.currentResult],
+                message: "*${currentBuild.currentResult}:* Job ${env.JOB_NAME} build ${env.BUILD_NUMBER} by ${BUILD_USER}\n More info at: ${env.BUILD_URL}"
+        }
+    }
+}
 
