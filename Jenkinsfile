@@ -1,4 +1,3 @@
-
 pipeline {
   agent any
   stages {
@@ -13,7 +12,6 @@ pipeline {
         sh '''mvn clean package
 
 '''
-     
       }
     }
 
@@ -34,26 +32,5 @@ docker push 192.168.1.149:8083/hello-world-war:${BUILD_NUMBER}
       }
     }
 
-    stage('Notify Slack') {
-      steps {
-        sh '''try {
-        notifyStarted()
-        stage \'Checkout Code\'
-        sh gg
-
-        stage \'Build Maven War\'
-        sh xx
-
-        stage \'Build Docker Image\'
-        sh yy
-
-        notifySuccessful()
-    } catch(e) {
-        currentBuild.result = "FAILED"
-        notifyFailed()
-    }'''
-        }
-      }
-
-    }
   }
+}
