@@ -1,3 +1,14 @@
+def notifyStarted() {
+    slackSend (color: '#FFFF00', message: "STARTED: Job '${env.JOB_NAME} [${env.BUILD_NUMBER}]' (${env.BUILD_URL})")
+}
+
+def notifySuccessful() {
+    slackSend (color: '#00FF00', message: "SUCCESSFUL: Job '${env.JOB_NAME} [${env.BUILD_NUMBER}]' (${env.BUILD_URL})")
+}
+
+def notifyFailed() {
+  slackSend (color: '#FF0000', message: "FAILED: Job '${env.JOB_NAME} [${env.BUILD_NUMBER}]' (${env.BUILD_URL})")
+}
 pipeline {
   agent any
   stages {
@@ -12,7 +23,7 @@ pipeline {
         sh '''mvn clean package
 
 '''
-        catchError(buildResult: 'FAILURE', catchInterruptions: true, message: 'Step Failed', stageResult: 'SUCCESS')
+     
       }
     }
 
