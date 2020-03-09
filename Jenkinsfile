@@ -48,13 +48,13 @@ docker push 192.168.1.149:8083/hello-world-war:${BUILD_NUMBER}
       steps {
         sh '''try {
         notifyStarted()
-        stage \'Checkout\'
+        stage \'Checkout Code\'
         sh gg
 
-        stage \'Build\'
+        stage \'Build Maven War\'
         sh xx
 
-        stage \'Deploy\'
+        stage \'Build Docker Image\'
         sh yy
 
         notifySuccessful()
