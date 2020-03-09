@@ -11,26 +11,7 @@ def notifyFailed() {
 }
 pipeline {
   agent any
-  try {
-        notifyStarted()
-        stage 'Checkout Code'
-        sh gg
-
-        stage 'Build Maven War'
-        sh xx
-
-        stage 'Static Code Analysis'
-        sh yy
-        
-        stage 'Build Docker Image'
-        sh aa
-
-        notifySuccessful()
-    } catch(e) {
-        currentBuild.result = "FAILED"
-        notifyFailed()
-    }
-
+  
   stages {
     stage('Checkout Code') {
       steps {
@@ -65,4 +46,23 @@ docker push 192.168.1.149:8083/hello-world-war:${BUILD_NUMBER}
     }
 
   }
+    try {
+        notifyStarted()
+        stage 'Checkout Code'
+        sh gg
+
+        stage 'Build Maven War'
+        sh xx
+
+        stage 'Static Code Analysis'
+        sh yy
+        
+        stage 'Build Docker Image'
+        sh aa
+
+        notifySuccessful()
+    } catch(e) {
+        currentBuild.result = "FAILED"
+        notifyFailed()
+    }
 }
