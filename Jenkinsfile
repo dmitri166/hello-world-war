@@ -46,6 +46,7 @@ docker push 192.168.1.149:8083/hello-world-war:${BUILD_NUMBER}
     }
 
   }
+   script { 
     try {
         notifyStarted()
         stage 'Checkout Code'
@@ -65,4 +66,5 @@ docker push 192.168.1.149:8083/hello-world-war:${BUILD_NUMBER}
         currentBuild.result = "FAILED"
         notifyFailed()
     }
+   }
 }
