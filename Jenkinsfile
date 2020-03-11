@@ -1,3 +1,17 @@
+def notifyBuild(String buildStatus = 'STARTED') {
+    // Build status of null means success.
+    buildStatus =  buildStatus ?: 'SUCCESS'
+    if (buildStatus == 'STARTED') {
+        colorCode = '#FFFF00'
+    } else if (buildStatus == 'SUCCESS') {
+        colorCode = '#00FF00'
+    } else {
+        colorCode = '#FF0000'
+    }
+    // Send notification.
+    def msg = "${buildStatus}: `${env.JOB_NAME}` #${env.BUILD_NUMBER}:\n${env.BUILD_URL}"
+    slackSend(color: colorCode, message: msg)
+}
 pipeline {
   agent any
   stages {
@@ -31,11 +45,14 @@ docker push 192.168.1.149:8083/hello-world-war:${BUILD_NUMBER}
       }
     }
 
-    stage('Notify Slack') {
-      steps {
-        slackSend(color: 'good', message: 'Build Passed')
-      }
+  } catch (e) {
+    // If there was an exception thrown, the build failed.
+        currentBuild.result = "FAILED"
+        throw e
+    } finally {
+    // Success or failure, always send notification.
+        stage('Notify Slack'){
+            notifyBuild(currentBuild.result)
+        }
     }
-
-  }
 }
