@@ -42,14 +42,15 @@ docker tag hello-world-war:${BUILD_NUMBER} 192.168.1.149:8083/hello-world-war:${
 docker login -u admin -p dima1986 192.168.1.149:8083
 docker push 192.168.1.149:8083/hello-world-war:${BUILD_NUMBER}
 '''
-      }
-    catch (e) {
+       }
+        }
+    } catch (e) {
     // If there was an exception thrown, the build failed.
         currentBuild.result = "FAILED"
         throw e
     } finally {
     // Success or failure, always send notification.
-        stage('Notify Slack'){
+        stage('7. Notifying Slack'){
             notifyBuild(currentBuild.result)
         }
     }
