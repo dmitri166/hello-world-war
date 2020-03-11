@@ -45,7 +45,8 @@ docker push 192.168.1.149:8083/hello-world-war:${BUILD_NUMBER}
       }
     }
 
-  } catch (e) {
+} 
+    catch (e) {
     // If there was an exception thrown, the build failed.
         currentBuild.result = "FAILED"
         throw e
