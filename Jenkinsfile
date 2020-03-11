@@ -28,6 +28,14 @@ docker tag hello-world-war:${BUILD_NUMBER} 192.168.1.149:8083/hello-world-war:${
 docker login -u admin -p dima1986 192.168.1.149:8083
 docker push 192.168.1.149:8083/hello-world-war:${BUILD_NUMBER}
 '''
-       }
-        }
+      }
+    }
+
+    stage('Notify Slack') {
+      steps {
+        slackSend(color: 'good', message: 'Build Passed')
+      }
+    }
+
   }
+}
