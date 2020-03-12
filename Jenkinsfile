@@ -54,7 +54,7 @@ docker push 192.168.1.149:8083/hello-world-war:${BUILD_NUMBER}
         throw e
     } finally {
     // Success or failure, always send notification.
-        stage(\'7. Notifying Slack\'){
+        {
             notifyBuild(currentBuild.result)
           }'''
         }
