@@ -1,17 +1,3 @@
-def notifyBuild(String buildStatus = 'STARTED') {
-    // Build status of null means success.
-    buildStatus =  buildStatus ?: 'SUCCESS'
-    if (buildStatus == 'STARTED') {
-        colorCode = '#FFFF00'
-    } else if (buildStatus == 'SUCCESS') {
-        colorCode = '#00FF00'
-    } else {
-        colorCode = '#FF0000'
-    }
-    // Send notification.
-    def msg = "${buildStatus}: `${env.JOB_NAME}` #${env.BUILD_NUMBER}:\n${env.BUILD_URL}"
-    slackSend(color: colorCode, message: msg)
-}
 
 pipeline {
   agent any
