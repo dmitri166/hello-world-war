@@ -1,4 +1,3 @@
-
 pipeline {
   agent any
   stages {
@@ -34,17 +33,9 @@ docker push 192.168.1.149:8083/hello-world-war:${BUILD_NUMBER}
 
     stage('Notify Slack') {
       steps {
-        sh '''catch (e) {
-    // If there was an exception thrown, the build failed.
-        currentBuild.result = "FAILED"
-        throw e
-    } finally {
-    // Success or failure, always send notification.
-        {
-            notifyBuild(currentBuild.result)
-          }'''
-        }
+        slackSend(color: 'good', message: 'Build Passed')
       }
-
     }
+
   }
+}
